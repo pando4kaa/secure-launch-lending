@@ -1,17 +1,8 @@
 import { GoogleGenAI } from "@google/genai";
 
-// Note: In a real production app, never expose API keys on the client side without safeguards.
-// This is structured for the demo requirement.
-const API_KEY = process.env.API_KEY || ''; 
-
 export const generateHeroImage = async (): Promise<string | null> => {
-  if (!API_KEY) {
-    console.warn("API Key not found for Gemini image generation.");
-    return null;
-  }
-
   try {
-    const ai = new GoogleGenAI({ apiKey: API_KEY });
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     const model = 'gemini-2.5-flash-image'; // Using the requested nano banana / flash image model equivalent
 
     const response = await ai.models.generateContent({

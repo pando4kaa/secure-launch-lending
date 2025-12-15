@@ -1,30 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { ShieldCheck, ChevronRight } from 'lucide-react';
-import { HERO } from '../constants';
-import { generateHeroImage } from '../services/geminiService';
+import { HERO, HERO_BG_IMAGES } from '../constants';
 
 const Hero: React.FC = () => {
-  const [bgImage, setBgImage] = useState<string | null>(null);
+  const [currentBgIndex, setCurrentBgIndex] = useState(0);
 
   useEffect(() => {
-    // Attempt to generate image if API key is present, otherwise fallback is handled by CSS
-    if (process.env.API_KEY) {
-        generateHeroImage().then(img => {
-            if (img) setBgImage(img);
-        });
-    }
+    // Rotate images every 5 seconds
+    const interval = setInterval(() => {
+      setCurrentBgIndex((prevIndex) => (prevIndex + 1) % HERO_BG_IMAGES.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
   }, []);
 
   return (
     <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-brand-dark min-h-screen flex flex-col justify-center">
-      {/* Background with Overlay */}
-      <div className="absolute inset-0 z-0">
-        {bgImage ? (
-             <img src={bgImage} alt="AI Generated Cyber Security Background" className="w-full h-full object-cover opacity-30" />
-        ) : (
-            // Fallback gradient matching brand colors
-            <div className="w-full h-full bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-900/40 via-gray-900 to-black"></div>
-        )}
+      {/* Background Slideshow */}
+      <div className="absolute inset-0 z-0 bg-black">
+        {HERO_BG_IMAGES.map((img, index) => (
+          <img
+            key={img}
+            src={img}
+            alt={`Security Background ${index}`}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
+              index === currentBgIndex ? 'opacity-40' : 'opacity-0'
+            }`}
+          />
+        ))}
+        {/* Overlay gradient */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-brand-dark/90"></div>
       </div>
 

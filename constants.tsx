@@ -4,6 +4,14 @@ import { Feature, Step, Deliverable, FAQItem, Persona } from './types';
 export const COMPANY_NAME = "IT Specialist";
 export const PRODUCT_NAME = "Secure Launch";
 
+export const HERO_BG_IMAGES = [
+  "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2670&auto=format&fit=crop", // Cyber blue tech
+  "https://images.unsplash.com/photo-1558494949-efdeb6bf80d1?q=80&w=2669&auto=format&fit=crop", // Circuit board
+  "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=2670&auto=format&fit=crop", // Matrix code lock
+  "https://images.unsplash.com/photo-1510511459019-5dda7724fd87?q=80&w=2670&auto=format&fit=crop", // Abstract data flow
+  "https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=1470&auto=format&fit=crop"  // Digital security
+];
+
 export const NAV_ITEMS = [
   { label: 'Проблема', href: '#problem' },
   { label: 'Рішення', href: '#solution' },
