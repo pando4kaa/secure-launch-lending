@@ -1,60 +1,97 @@
-import React from 'react';
-import { PERSONAS } from '../constants';
-import { Quote } from 'lucide-react';
+import React, { useRef } from 'react';
+import { TESTIMONIALS } from '../constants';
+import { Quote, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const Testimonials: React.FC = () => {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const scrollAmount = scrollRef.current.clientWidth;
+      scrollRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth',
+      });
+    }
+  };
+
   return (
-    <section id="audience" className="py-24 bg-gray-50">
+    <section id="reviews" className="py-24 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-brand-dark mb-4">
-            Для кого це рішення?
+            Що кажуть наші клієнти
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-             Ми розуміємо ваші болі та розмовляємо вашою мовою, чи ви інженер, чи бізнесмен.
+          <p className="text-gray-600 max-w-3xl mx-auto">
+             Досвід тих, хто вже захистив свій бізнес разом з нами.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-          {PERSONAS.map((persona, index) => (
-            <div key={index} className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100 flex flex-col h-full relative overflow-hidden">
-               <div className="absolute top-0 right-0 -mt-4 -mr-4 text-gray-100">
-                   <Quote size={120} />
-               </div>
-               
-               <div className="relative z-10">
-                   <div className="flex items-center mb-6">
-                       {/* Use a colored placeholder div instead of external image for stability if network fails, or the actual image */}
-                       <div className="w-16 h-16 rounded-full bg-gradient-to-br from-brand-blue to-blue-800 flex items-center justify-center text-white text-xl font-bold shadow-md">
-                            {persona.name.charAt(0)}
-                       </div>
-                       <div className="ml-4">
-                           <h4 className="text-xl font-bold text-gray-900">{persona.name}</h4>
-                           <span className="text-brand-blue font-medium">{persona.role}</span>
-                       </div>
-                   </div>
-                   
-                   <blockquote className="text-xl italic text-gray-700 mb-6 font-medium">
-                       "{persona.quote}"
-                   </blockquote>
-                   
-                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-auto">
-                       <div>
-                           <h5 className="text-xs font-bold text-red-500 uppercase tracking-wide mb-2">Страхи (Pains)</h5>
-                           <ul className="text-sm text-gray-600 space-y-2">
-                               {persona.pains.map((p, i) => <li key={i}>• {p}</li>)}
-                           </ul>
-                       </div>
-                       <div>
-                           <h5 className="text-xs font-bold text-green-600 uppercase tracking-wide mb-2">Очікування</h5>
-                            <ul className="text-sm text-gray-600 space-y-2">
-                               {persona.expectations.map((e, i) => <li key={i}>• {e}</li>)}
-                           </ul>
-                       </div>
-                   </div>
-               </div>
+        <div className="relative group">
+            {/* Scroll Buttons */}
+            <button 
+                onClick={() => scroll('left')} 
+                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-12 z-20 bg-white p-3 rounded-full shadow-lg text-brand-dark hover:text-brand-blue transition-colors focus:outline-none hidden md:block"
+                aria-label="Previous testimonial"
+            >
+                <ChevronLeft size={24} />
+            </button>
+            <button 
+                onClick={() => scroll('right')} 
+                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-12 z-20 bg-white p-3 rounded-full shadow-lg text-brand-dark hover:text-brand-blue transition-colors focus:outline-none hidden md:block"
+                aria-label="Next testimonial"
+            >
+                <ChevronRight size={24} />
+            </button>
+
+            {/* Carousel Container */}
+            <div 
+                ref={scrollRef}
+                className="flex overflow-x-auto gap-6 pb-8 snap-x snap-mandatory scrollbar-hide px-4"
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+                {TESTIMONIALS.map((testimonial, index) => (
+                    <div 
+                        key={index} 
+                        className="flex-shrink-0 w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] snap-center"
+                    >
+                        <div className="bg-white rounded-2xl p-8 shadow-md border border-gray-100 h-full flex flex-col hover:shadow-xl transition-shadow duration-300">
+                             <div className="flex items-center mb-6">
+                                <img 
+                                    src={testimonial.image} 
+                                    alt={testimonial.name}
+                                    className="w-14 h-14 rounded-full object-cover border-2 border-gray-100"
+                                />
+                                <div className="ml-4">
+                                    <h4 className="text-lg font-bold text-gray-900">{testimonial.name}</h4>
+                                    <span className="text-sm text-brand-blue font-medium">{testimonial.role}</span>
+                                </div>
+                            </div>
+                            
+                            <div className="flex-grow">
+                                <Quote size={24} className="text-brand-blue/20 mb-2" />
+                                <p className="text-gray-700 italic leading-relaxed">
+                                    "{testimonial.content}"
+                                </p>
+                            </div>
+
+                            <div className="mt-6 pt-4 border-t border-gray-50 flex items-center">
+                                <div className="flex text-yellow-400 text-sm">
+                                    {'★'.repeat(5)}
+                                </div>
+                                <span className="text-xs text-gray-400 ml-2">Verified Review</span>
+                            </div>
+                        </div>
+                    </div>
+                ))}
             </div>
-          ))}
+            
+            {/* Mobile Swipe Hint */}
+            <div className="md:hidden flex justify-center mt-4 space-x-1">
+                <div className="w-2 h-2 rounded-full bg-gray-300"></div>
+                <div className="w-2 h-2 rounded-full bg-gray-300"></div>
+                <div className="w-2 h-2 rounded-full bg-gray-300"></div>
+            </div>
         </div>
       </div>
     </section>

@@ -53,7 +53,7 @@ const ContactForm: React.FC = () => {
                     type="submit" 
                     className="w-full bg-brand-dark text-white font-bold py-4 rounded-lg hover:bg-gray-900 transition-colors shadow-lg hover:shadow-xl transform active:scale-95 duration-200"
                 >
-                    Отримати консультацію та оцінку
+                    Отримати консультацію
                 </button>
                 <p className="text-xs text-center text-gray-400 mt-4">
                     Натискаючи кнопку, ви погоджуєтесь з політикою конфіденційності. Ваші дані під захистом NDA.

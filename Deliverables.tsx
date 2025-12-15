@@ -14,6 +14,9 @@ const Deliverables: React.FC = () => {
                 <h2 className="text-3xl md:text-4xl font-bold text-brand-dark mb-6">
                     Результат, який ви отримаєте
                 </h2>
+                <p className="text-lg text-gray-600 mb-10">
+                    Матеріалізація послуги. Ми даємо конкретні інструкції.
+                </p>
 
                 <div className="space-y-8">
                     {DELIVERABLES.map((item, index) => {
